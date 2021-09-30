@@ -1,0 +1,16 @@
+---
+title: "DSlecture7_tidy data"
+author: "Hening cui"
+date: "2021/9/30"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+```
+
