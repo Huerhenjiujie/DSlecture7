@@ -97,3 +97,29 @@ lotr_new = rbind (fellowship_ring, two_towers, return_king)
 ```
 
 
+## join datasets
+import the FAS dataset 
+```{r}
+pups_df =
+  read_csv("./data/FAS_pups.csv") %>% 
+  janitor::clean_names() %>% 
+  mutate(sex = recode(sex, `1` = "male", `2`= "female"))
+litter_df = 
+  read_csv("./data/FAS_litters.csv") %>% 
+  janitor::clean_names() %>% 
+  relocate(litter_number) %>% 
+  separate(group, into = c("dose", "day_of_tx"), sep = 3)
+
+
+```
+next join them
+```{r}
+fas_df = 
+  left_join(pups_df, litter_df, by = "litter_number") %>% 
+  arrange(litter_number) %>% 
+  relocate(litter_number, sex, dose, day_of_tx)
+```
+
+
+
+
