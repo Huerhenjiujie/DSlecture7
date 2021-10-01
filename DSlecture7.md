@@ -50,7 +50,7 @@ make up data
 ``` r
 analysis_result = 
   tibble(
-    group = c(" treatment", "treatment", "placebo", "placebo"),
+    group = c("treatment", "treatment", "placebo", "placebo"),
     time = c("pre", "post", "pre", "post"),
     mean = c(4, 8, 3.5, 4)
   )
@@ -58,12 +58,42 @@ analysis_result %>%
   pivot_wider(
     names_from = "time",
     values_from = "mean"
-  )
+  ) %>% 
+  knitr::kable()
 ```
 
-    ## # A tibble: 3 × 3
-    ##   group          pre  post
-    ##   <chr>        <dbl> <dbl>
-    ## 1 " treatment"   4      NA
-    ## 2 "treatment"   NA       8
-    ## 3 "placebo"      3.5     4
+| group     | pre | post |
+|:----------|----:|-----:|
+| treatment | 4.0 |    8 |
+| placebo   | 3.5 |    4 |
+
+## binding rows
+
+using lotR data
+
+``` r
+fellowship_ring = 
+  readxl::read_excel("./data/lotR_Words.xlsx", range = "B3:D6") %>% 
+  mutate(movie = "fellowship_ring")
+two_towers = 
+  readxl::read_excel("./data/lotR_Words.xlsx", range = "F3:H6") %>% 
+  mutate(movie = "two_towers")
+return_king = 
+  readxl::read_excel("./data/lotR_Words.xlsx", range = "J3:L6") %>% 
+  mutate(movie = "return_king")
+```
+
+BInd all rows together
+
+``` r
+lotr_tidy = 
+  bind_rows(fellowship_ring, two_towers, return_king) %>% 
+  janitor::clean_names() %>% 
+  relocate(movie) %>% 
+  pivot_longer(
+    female:male,
+    names_to = "gender",
+    values_to = "words"
+  )
+lotr_new = rbind (fellowship_ring, two_towers, return_king)
+```
